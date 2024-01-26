@@ -124,6 +124,23 @@ You also provide short explantion of the errors that occoured witn comments in c
     return response['choices'][0]['message']['content']
 
 # ---------------------------------------------------------------------------------------------
+# Chat with Code
+
+def chat_code(query, chat_query):
+    if(check_if_not_null(query)):
+        client = OpenAI()
+        response = client.ChatCompletion.create(
+            model = "gpt-3.5-turbo",
+            messages=[
+            {"role": "system", "content": "You are a helpful and experienced software engineer who is expert in explaining code."},
+            {"role": "user", "content": f"Code context: {query}\nUser: {chat_query}"}
+        ]
+        )
+        return response['choices'][0]['message']['content']
+    else:
+        return "No Input"
+
+# ---------------------------------------------------------------------------------------------
 # Global space
        
 # first,second = st.columns((1,1))
@@ -235,11 +252,12 @@ def main():
     # ---------------------------------------------------------------------------------------------
     # Feature 4: Chat with Code
         
-    #code_to_chat = st.text_area("Enter code to chat with:")
-    #chat_response = st.text("Chat response will appear here")
     if features == "Chat with Code":
          # chat with code logic
-        pass
+        user_query = st.text_input("Ask question abouto the code: ")
+        if user_query:
+            response = chat_code(code_to_analyze)
+            st.write("CodeSurma: ", response)
         
 # ---------------------------------------------------------------------------------------------
 
